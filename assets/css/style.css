@@ -1,0 +1,31 @@
+.item{
+    float:left;
+    margin: 2%;
+}
+
+#animalForm{
+    text-align:center;
+}
+
+.animalBtn{
+    margin:.5%;
+}
+
+#animalButtons{
+    margin:1%;
+    border:2px solid black;
+    outline-color:rgb(24, 125, 192);  
+    outline-style:ridge;
+}
+
+#animals{
+    margin:1%;
+    
+}
+#addAnimal{
+    margin-top:1%;
+}
+
+label{
+    font-weight:bold;
+}

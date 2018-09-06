@@ -18,7 +18,7 @@ $("#addAnimal").on("click", function(event) {
     $("#animal-input").val("");
   });
 
-$(document).on("click",".btn", function() {
+$(document).on("click",".animalBtn", function() {
      // Deleting the animal gifs prior to displaying more
      $("#animals").empty();
     
@@ -32,9 +32,10 @@ $(document).on("click",".btn", function() {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        // Storing an array of results in the results variable
+    // Storing an array of results in the results variable
     var results = response.data;
-
+    
+    console.log(response);
     // Looping over every result item
     for (var i = 0; i < results.length; i++) {
 
@@ -54,14 +55,23 @@ $(document).on("click",".btn", function() {
 
           // Giving the image tag an src attribute of a proprty pulled off the
           // result item
-          animalImage.attr("src", results[i].images.fixed_height.url);
+          animalImage.attr("src", results[i].images.fixed_height_still.url);
+                                                    
+          //Giving animalImage data-still/data-animate/data-state
+          animalImage.attr("data-still", results[i].images.fixed_height_still.url);
+          animalImage.attr("data-animate", results[i].images.fixed_height.url);
+          animalImage.attr("data-state", "still");
+          
+          
+          //Giving animalImage a gif class to control still/active
+          animalImage.addClass("gif");
 
           // Appending the paragraph and animalImage we created to the "gifDiv" div we created
           gifDiv.append(p);
           gifDiv.append(animalImage);
 
           // Prepending the gifDiv to the "#animals" div in the HTML
-          $("#animals").prepend(gifDiv);
+          $("#animals").append(gifDiv);
         }
       }
 });
@@ -79,7 +89,7 @@ function renderButtons() {
       // Then dynamicaly generating buttons for each animal in the array.
       var a = $("<button>");
       // Adding a class
-      a.addClass("btn btn-outline-info");
+      a.addClass("btn btn-outline-primary animalBtn");
       // Adding a data-attribute with a value of the animal at index i
       a.attr("data-animal", animalsArray[i]);
       // Providing the button's text with a value of the animal at index i
@@ -88,5 +98,20 @@ function renderButtons() {
       $("#animalButtons").append(a);
     }
 }
+
+$(document).on("click",".gif", function() {
+    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    var state = $(this).attr("data-state");
+    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+    // Then, set the image's data-state to animate
+    // Else set src to the data-still value
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+  });
 
 
